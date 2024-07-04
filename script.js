@@ -1,4 +1,4 @@
-let tripToParse = "Perdita 8 10 8"
+//let tripToParse = "Perdita 8 10 8"
 let tripsToParse = [
     "Roger 0 5 10",
     "Pongo 3 7 14",
@@ -12,9 +12,7 @@ function parseTrip(trip) {
 
     for (let i = 0; i < tripSplit.length; i++) {
         vol[Object.keys(vol)[i]] = tripSplit[i]
-        //console.log(tripSplit[i], Object.keys(vol)[i])
     }
-    //console.log('vol:', vol)
     return vol
 }
 // console.log(parseTrip(tripToParse))
@@ -30,16 +28,17 @@ function parseTrips(trips) {
 
 //console.log(parseTrips(tripsToParse))
 
-function getTripsPrice(voyages) {
+/*function getTripsPrice(voyages) {
     let totalPrice = 0
     for (let i = 0; i < voyages.length; i++) {
         totalPrice += parseInt(voyages[i].prix)
     }
 
     return totalPrice
-}
+}*/
 
 let listeVoyages = parseTrips(tripsToParse)
+
 //console.log(getTripsPrice(listeVoyages))
 
 function checkCompatibility(tripA, tripB) {
@@ -52,4 +51,53 @@ function checkCompatibility(tripA, tripB) {
 
 }
 
-console.log(checkCompatibility(listeVoyages[0], listeVoyages[2]))
+//console.log(checkCompatibility(listeVoyages[0], listeVoyages[1]))
+
+function findCompatibilities(trips) {
+    const compatibilites = []
+    for (let i = 0; i < trips.length; i++) {
+        compatibilites.push([trips[i]])
+        for (let j = 0; j < trips.length; j++) {
+            if (checkCompatibility(trips[i], trips[j])) {
+                compatibilites.push([trips[i], trips[j]])
+
+            }
+        }
+    }
+    return compatibilites
+}
+
+let resultatsCompatibles = findCompatibilities(listeVoyages)
+//console.log(resultatsCompatibles)
+
+function findBestPrice(trips) {
+    let prixMax = 0;
+    let prixActuel = 0;
+    let client = [];
+    let topClient = [];
+    let message;
+
+    for (let i = 0; i < trips.length; i++) {
+        if (trips[i].length === 2) {
+            prixActuel = parseInt(trips[i][0].prix) + parseInt(trips[i][1].prix)
+            client = [trips[i][0].client, trips[i][1].client]
+        } else {
+            prixActuel = parseInt(trips[i][0].prix)
+            client = [trips[i][0].client]
+        }
+        if (prixActuel > prixMax) {
+            prixMax = prixActuel
+            topClient = client
+            if (trips[i].length === 2) {
+                message = `Le vol le plus rentable est ${topClient[0]} - ${topClient[1]} : ${prixMax} euros`
+            } else {
+                message = `Le vol le plus rentable est ${topClient[0]} : ${prixMax} euros`
+
+            }
+
+        }
+    }
+    return message
+}
+let finalPrice = findBestPrice(resultatsCompatibles)
+console.log(finalPrice)
