@@ -9,7 +9,7 @@ let tripsToParse = [
 function parseTrip(trip) {
     const tripSplit = trip.split(' ')
     const vol = { 'client': '', 'depart': '', 'duree': '', 'prix': '' }
-    for (let i = 0; i < tripSplit.length; i++) {
+    for (let i = 0; i < trip.length; i++) {
         vol[Object.keys(vol)[i]] = tripSplit[i]
     }
     return vol
@@ -18,7 +18,7 @@ function parseTrip(trip) {
 
 function parseTrips(trips) {
     const tableau = []
-    for (let i = 0; i < tripsToParse.length; i++) {
+    for (let i = 0; i < trips.length; i++) {
         let lignevol = parseTrip(trips[i])
         tableau.push(lignevol)
     }
